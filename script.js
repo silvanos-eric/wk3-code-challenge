@@ -1,12 +1,13 @@
 // DOM Elements of interest
 const fragmentEl = document.createDocumentFragment();
 const featuredMovieEl = document.querySelector("section#featured-movie");
-const movieMenuEl = document.querySelector("ul#films");
+const movieMenuEl = document.querySelector("ul#movies");
 
 async function main() {
   showFirstMovieDetails();
   showMovieMenu();
   initializeTicketPurchase();
+  initializeUpdateSelectedMovie();
 }
 
 // Utility functions
@@ -33,7 +34,7 @@ async function fetchMovies() {
     // Parse the JSON data
     const moviesData = await response.json();
 
-    // return the films data
+    // return the movies data
     return moviesData;
   } catch (error) {
     // Handle any errors that occurred during the fetch
@@ -41,11 +42,11 @@ async function fetchMovies() {
   }
 }
 
-function displayMovieCard(movie) {
+function displayMovieCard(movieData) {
   if (featuredMovieEl.querySelector("div")) {
     featuredMovieEl.querySelector("div").remove();
   }
-  const movieEl = createSelectedMovieCard(movie);
+  const movieEl = createSelectedMovieCard(movieData);
   featuredMovieEl.appendChild(movieEl);
 }
 
@@ -126,8 +127,8 @@ function availableTickets(capacity, tickets_sold) {
 }
 
 async function showMovieMenu() {
-  const allMovies = await fetchMovies();
-  createMovieMenu(allMovies);
+  const allMoviesData = await fetchMovies();
+  createMovieMenu(allMoviesData);
   displayMovieMenu();
 }
 
@@ -143,6 +144,7 @@ function createMovieMenu(movies) {
 function createMovieMenuItem(movie) {
   const menuItem = document.createElement("li");
   menuItem.classList.add("movie-item", "list-group-item", "d-flex");
+  menuItem.dataset.id = movie.id;
 
   const p = document.createElement("p");
   p.classList.add("ms-2");
@@ -229,12 +231,37 @@ async function patchMovie(movieId, newTicketsSold) {
     // Parse the JSON data
     const movieData = await response.json();
 
-    // return the films data
+    // return the movies data
     return movieData;
   } catch (error) {
     // Handle any errors that occurred during the fetch
     console.error(`There has been an error with your fetch operation ${error}`);
   }
+}
+
+function initializeUpdateSelectedMovie() {
+  initializeSelectingAMovie();
+}
+
+function initializeSelectingAMovie() {
+  const movieList = document.querySelector("ul#movies");
+
+  let selectedMovieListItem = undefined;
+  let selectedMovieId = undefined;
+
+  movieList.addEventListener("click", async (event) => {
+    if (event.target.matches("li") || event.target.matches("li *")) {
+      if (event.target.nodeName === "LI") {
+        selectedMovieListItem = event.target;
+      } else {
+        const childEl = event.target;
+        selectedMovieListItem = childEl.parentElement;
+      }
+      selectedMovieId = Number.parseInt(selectedMovieListItem.dataset.id);
+    }
+    const movieData = await getMovie(selectedMovieId);
+    displayMovieCard(movieData);
+  });
 }
 
 main();
