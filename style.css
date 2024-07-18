@@ -1,3 +1,7 @@
 .movie-menu-item-img {
   max-height: 5rem;
 }
+
+.movie-item {
+  cursor: pointer;
+}
