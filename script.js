@@ -12,7 +12,7 @@ async function main() {
 // Utility functions
 async function showFirstMovieDetails() {
   const movie = await getMovie(1);
-  displayMovie(movie);
+  displayMovieCard(movie);
 }
 
 async function getMovie(movieId) {
@@ -41,8 +41,9 @@ async function fetchMovies() {
   }
 }
 
-function displayMovie(movie) {
+function displayMovieCard(movie) {
   const movieEl = createSelectedMovieCard(movie);
+  featuredMovieEl.innerHTML = null;
   featuredMovieEl.appendChild(movieEl);
 }
 
@@ -201,11 +202,10 @@ function initializeTicketPurchase() {
 
 async function updateMovie(movieId, newTicketsSold) {
   const updateMovie = await patchMovie(movieId, newTicketsSold);
-  console.log(updateMovie);
+  displayMovieCard(updateMovie);
 }
 
 async function patchMovie(movieId, newTicketsSold) {
-  console.log(newTicketsSold);
   try {
     // Fetch user data from the API
     const response = await fetch(`http://localhost:3000/movies/${movieId}`, {
