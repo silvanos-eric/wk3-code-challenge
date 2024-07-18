@@ -42,8 +42,10 @@ async function fetchMovies() {
 }
 
 function displayMovieCard(movie) {
+  if (featuredMovieEl.querySelector("div")) {
+    featuredMovieEl.querySelector("div").remove();
+  }
   const movieEl = createSelectedMovieCard(movie);
-  featuredMovieEl.innerHTML = null;
   featuredMovieEl.appendChild(movieEl);
 }
 
