@@ -261,7 +261,13 @@ function initializeSelectingAMovie() {
     }
     const movieData = await getMovie(selectedMovieId);
     displayMovieCard(movieData);
+    scrollMovieCardIntoView();
   });
+}
+
+function scrollMovieCardIntoView() {
+  const movieCardEl = document.querySelector("div.card");
+  movieCardEl.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 main();
