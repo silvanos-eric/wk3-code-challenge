@@ -1,9 +1,11 @@
 // DOM Elements of interest
-const fragment = document.createDocumentFragment();
-const featuredMovie = document.querySelector("section#featured-movie");
+const fragmentEl = document.createDocumentFragment();
+const featuredMovieEl = document.querySelector("section#featured-movie");
+const movieMenuEl = document.querySelector("ul#films");
 
 async function main() {
   showFirstMovieDetails();
+  showMovieMenu();
 }
 
 // Utility functions
@@ -39,11 +41,11 @@ async function fetchMovies() {
 }
 
 function displayMovie(movie) {
-  const movieEl = createMovieEl(movie);
-  featuredMovie.appendChild(movieEl);
+  const movieEl = createMovieCardEl(movie);
+  featuredMovieEl.appendChild(movieEl);
 }
 
-function createMovieEl(movie) {
+function createMovieCardEl(movie) {
   const movieEl = document.createElement("div");
   movieEl.classList.add("card");
   movieEl.style.width = "18rem";
@@ -80,6 +82,48 @@ function createMovieEl(movie) {
 
 function availableTickets(capacity, tickets_sold) {
   return capacity - tickets_sold;
+}
+
+async function showMovieMenu() {
+  const allMovies = await fetchMovies();
+  createMovieMenu(allMovies);
+  displayMovieMenu();
+}
+
+function createMovieMenu(movies) {
+  const movieMenuElCollection = [];
+  for (const movie of movies) {
+    const movieMenuEl = createMovieMenuItem(movie);
+    movieMenuElCollection.push(movieMenuEl);
+  }
+  addCollectionToFragmentEl(movieMenuElCollection);
+}
+
+function createMovieMenuItem(movie) {
+  const menuItem = document.createElement("li");
+  menuItem.classList.add("list-group-item", "d-flex");
+
+  const p = document.createElement("p");
+  p.classList.add("ms-2");
+  p.textContent = movie.title;
+
+  const img = document.createElement("img");
+  img.setAttribute("src", movie.poster);
+  img.setAttribute("alt", movie.title);
+  img.classList.add("mw-25", "movie-menu-item-img");
+
+  menuItem.append(img, p);
+  return menuItem;
+}
+
+function displayMovieMenu() {
+  movieMenuEl.appendChild(fragmentEl);
+}
+
+function addCollectionToFragmentEl(collection) {
+  for (const item of collection) {
+    fragmentEl.appendChild(item);
+  }
 }
 
 main();

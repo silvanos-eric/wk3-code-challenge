@@ -14,12 +14,23 @@
     />
     <script src="script.js" defer></script>
   </head>
-  <body class="container">
-    <header class="p-5">
+  <body>
+    <header class="container p-5">
       <h1 class="text-center">Filmdango</h1>
     </header>
-    <main>
-      <section id="featured-movie"></section>
+    <main class="container">
+      <div class="row justify-content-center">
+        <section id="all-movies" class="col col-md-5">
+          <h2 class="text-center">All Movies</h2>
+          <ul id="films" class="list-group"></ul>
+        </section>
+        <section
+          id="featured-movie"
+          class="col col-md-5 d-flex flex-column align-items-center"
+        >
+          <h2>Selected Movie</h2>
+        </section>
+      </div>
     </main>
     <footer class="p-5"></footer>
   </body>
