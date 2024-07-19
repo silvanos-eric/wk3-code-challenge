@@ -2,6 +2,8 @@
 const fragmentEl = document.createDocumentFragment();
 const featuredMovieEl = document.querySelector("section#featured-movie");
 const movieMenuEl = document.querySelector("ul#movies");
+const API_URL = "https://json-server-vercel-three-pearl.vercel.app/movies";
+// const API_URL = "http://localhost:3000/movies";
 
 async function main() {
   showFirstMovieDetails();
@@ -24,9 +26,7 @@ async function getMovie(movieId) {
 async function fetchMovies() {
   try {
     // Fetch user data from the API
-    const response = await fetch(
-      "https://json-server-vercel-three-pearl.vercel.app/movies"
-    );
+    const response = await fetch(API_URL);
 
     // Check if the response is okay
     if (!response.ok) {
@@ -215,7 +215,7 @@ async function updateMovie(movieId, newTicketsSold) {
 async function patchMovie(movieId, newTicketsSold) {
   try {
     // Fetch user data from the API
-    const response = await fetch(`http://localhost:3000/movies/${movieId}`, {
+    const response = await fetch(`${API_URL}/${movieId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
