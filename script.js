@@ -24,11 +24,14 @@ async function getMovie(movieId) {
 async function fetchMovies() {
   try {
     // Fetch user data from the API
-    const response = await fetch("http://localhost:3000/movies");
+    const response = await fetch(
+      "https://json-server-vercel-three-pearl.vercel.app/movies"
+    );
 
     // Check if the response is okay
     if (!response.ok) {
       throw new Error(`Network response was not ok ${response.statusText}`);
+    } else {
     }
 
     // Parse the JSON data
